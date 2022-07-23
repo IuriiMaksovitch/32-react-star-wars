@@ -13,7 +13,8 @@ class AboutMe extends React.Component {
 
   componentDidMount() {
     let info = {};
-    if (Date.now() - localStorage.getItem('updateTime') > 2592000000) {
+    const ttl = 2592000000;
+    if (Date.now() - localStorage.getItem('updateTimeInfo') > ttl || !localStorage.getItem('hero')) {
       fetch(`${base_url}/v1/peoples/1`)
         .then(response => response.json())
         .then(data => {
@@ -29,7 +30,7 @@ class AboutMe extends React.Component {
           };
           this.setState({ hero: info });
           localStorage.setItem('hero', JSON.stringify(info));
-          localStorage.setItem('updateTime', Date.now());
+          localStorage.setItem('updateTimeInfo', Date.now());
           console.log('from server')
         });
     } else {

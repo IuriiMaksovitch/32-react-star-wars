@@ -14,13 +14,14 @@ class Contact extends React.Component {
 
   async fillPlanets(url) {
     let planets = [];
-    if (Date.now() - localStorage.getItem('planets') > 2592000000) {
+    const ttl = 2592000000;
+    if (Date.now() - localStorage.getItem('updateTimePlanets') > ttl || !localStorage.getItem('planets')) {
       const response = await fetch(url);
       const json = await response.json();
       planets = json.map(item => item.name);
       this.setState({ planets });
       localStorage.setItem('planets', JSON.stringify(planets));
-      localStorage.setItem('updateTime', Date.now());
+      localStorage.setItem('updateTimePlanets', Date.now());
       console.log('from server')
     } else {
       planets = JSON.parse(`${localStorage.getItem('planets')}`);
